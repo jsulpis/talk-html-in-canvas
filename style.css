@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,900;1,300;1,400&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@700&display=swap');
+
+:root {
+  --slidev-transition-duration: 0.3s;
+  --bg: #f6f9fd;
+  --bg-deep: #edf3fa;
+  --surface: #ffffff;
+  --grid: #c5d6ea;
+  --grid-subtle: #dfe9f4;
+  --line: #b7cbdf;
+  --line-strong: #3d6fc2;
+  --accent: #2563eb;
+  --accent-soft: #60a5fa;
+  --accent-bright: #1d4ed8;
+  --text: #101b2d;
+  --text-body: #2c3c55;
+  --text-secondary: #2f4a75;
+  --text-muted: #5c7392;
+  --text-faint: #aabed7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.vs-title {
+  width: fit-content;
+  margin: 0 auto;
+  color: var(--text);
+  font-size: 5.5rem;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+}
+
+.vs-title {
+  view-transition-name: vs-title;
+}
+
+::view-transition-group(vs-title) {
+  animation-duration: 600ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(vs-title) {
+  animation: none;
+  opacity: 0;
+}
+
+::view-transition-new(vs-title) {
+  animation: none;
+  opacity: 1;
+}
+
+.vs-weak {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: .8em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
