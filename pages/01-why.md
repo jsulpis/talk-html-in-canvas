@@ -148,3 +148,97 @@ tree:
 
 </SemanticsPanel>
 
+---
+layout: vs
+title: Interactions
+side: html
+---
+
+<div v-click="1" class="cta-stage vs-lead">
+  <CtaButton />
+</div>
+
+::right::
+
+<SemanticsPanel code-click>
+
+```html
+<button type="button">Bonjour !</button>
+```
+
+</SemanticsPanel>
+
+---
+layout: vs
+title: Interactions
+side: html
+highlight: true
+---
+
+<input
+  class="text-demo"
+  type="text"
+  placeholder="Écrivez ici…"
+  aria-label="Écrivez ici"
+/>
+
+---
+layout: vs
+title: Interactions
+side: canvas
+transition: view-transition
+---
+
+<div class="canvas-frame canvas-hero canvas-solo">
+  <svg class="canvas-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="8" y="10" width="48" height="44" rx="3" />
+    <circle cx="23" cy="24" r="5" />
+    <path d="M12 47l13-14 10 10 7-7 10 11" />
+  </svg>
+</div>
+
+---
+layout: vs
+title: Interactions
+side: canvas
+highlight: true
+---
+
+<blockquote class="spec-quote">
+  “Implementing text editing controls using the canvas element [...] is a huge amount of work, and authors are most strongly encouraged to
+  avoid doing any of it”
+  <footer>
+    <a
+      href="https://html.spec.whatwg.org/multipage/canvas.html#best-practices"
+      target="_blank"
+      rel="noreferrer"
+    >HTML Living Standard</a>
+  </footer>
+</blockquote>
+
+---
+layout: vs
+title: Interactions
+subtitle: Hit Testing (WebGL)
+side: canvas
+---
+
+<CanvasCubes class="canvas-large" />
+
+---
+layout: vs
+title: Interactions
+subtitle: Hit Testing (Canvas 2D)
+side: canvas
+---
+
+<CanvasButton class="canvas-large" />
+
+---
+layout: vs
+title: Interactions
+subtitle: HTML overlay
+side: canvas
+---
+
+<PetitCauldronShot class="canvas-large" />

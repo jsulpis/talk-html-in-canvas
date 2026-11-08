@@ -8,7 +8,13 @@ const props = defineProps<{
 }>();
 
 const title = computed(() => props.frontmatter.title as string | undefined);
+const subtitle = computed(
+  () => props.frontmatter.subtitle as string | undefined,
+);
 const isCanvas = computed(() => props.side === "canvas");
+const isLit = computed(
+  () => props.side === "html" && Boolean(props.frontmatter.highlight),
+);
 const isDivider = computed(() => Boolean(props.frontmatter.divider));
 </script>
 
@@ -19,11 +25,15 @@ const isDivider = computed(() => Boolean(props.frontmatter.divider));
     </main>
 
     <main v-else class="vs-content">
-      <p class="vs-eyebrow" :class="{ 'vs-eyebrow-canvas': isCanvas }">
-        <span :class="isCanvas ? 'vs-fade' : 'vs-strong'">HTML</span> <span class="vs-weak">vs</span> <span :class="isCanvas ? 'vs-strong' : 'vs-fade'">Canvas</span><span v-if="!isCanvas" v-click />
+      <p
+        class="vs-eyebrow"
+        :class="{ 'vs-eyebrow-canvas': isCanvas, 'vs-eyebrow-lit': isLit }"
+      >
+        <span :class="isCanvas ? 'vs-fade' : 'vs-strong'">HTML</span> <span class="vs-weak">vs</span> <span :class="isCanvas ? 'vs-strong' : 'vs-fade'">Canvas</span><span v-if="!isCanvas && !isLit" v-click />
       </p>
 
       <h1 v-if="title">{{ title }}</h1>
+      <p v-if="subtitle" class="vs-subtitle">{{ subtitle }}</p>
 
       <div
         class="vs-body"
@@ -85,6 +95,13 @@ const isDivider = computed(() => Boolean(props.frontmatter.divider));
   line-height: 1.1;
 }
 
+.vs-subtitle {
+  margin: -30px 0 40px;
+  color: var(--text-muted);
+  font-size: 2.5rem;
+  font-weight: 400;
+}
+
 .vs-content :deep(code) {
   color: var(--accent-bright);
   font-family: "JetBrains Mono", monospace;
@@ -144,13 +161,19 @@ const isDivider = computed(() => Boolean(props.frontmatter.divider));
 }
 
 .vs-eyebrow-canvas .vs-fade,
-.vs-eyebrow-canvas .vs-weak {
+.vs-eyebrow-canvas .vs-weak,
+.vs-eyebrow-lit .vs-fade,
+.vs-eyebrow-lit .vs-weak {
   color: var(--text-faint);
 }
 
 .vs-eyebrow-canvas .vs-strong::before {
   left: auto;
   right: -0.65em;
+  opacity: 1;
+}
+
+.vs-eyebrow-lit .vs-strong::before {
   opacity: 1;
 }
 
@@ -185,6 +208,11 @@ const isDivider = computed(() => Boolean(props.frontmatter.divider));
   transition:
     translate 400ms cubic-bezier(0.5, 0, 0.1, 1),
     opacity 300ms ease;
+}
+
+.vs-body :deep(.cta-stage) {
+  display: flex;
+  justify-content: center;
 }
 
 .vs-body :deep(.vs-lead.slidev-vclick-prior) {
@@ -238,6 +266,64 @@ const isDivider = computed(() => Boolean(props.frontmatter.divider));
   cursor: pointer;
 }
 
+.vs-content :deep(.text-demo) {
+  width: 560px;
+  padding: 28px 40px;
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  font-size: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 18px 50px #2563eb26;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.vs-content :deep(.text-demo:hover) {
+  border-color: var(--accent);
+  box-shadow: 0 22px 55px #2563eb40;
+}
+
+.vs-content :deep(.text-demo:focus) {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px #2563eb26;
+}
+
+.vs-content :deep(.spec-quote) {
+  max-width: 1500px;
+  margin: 0;
+  padding-left: 40px;
+  color: var(--text);
+  font-size: 3rem;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.35;
+  border-left: 6px solid var(--accent);
+}
+
+.vs-content :deep(.spec-quote footer) {
+  margin-top: 36px;
+  color: var(--text-muted);
+  font-style: normal;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.vs-content :deep(.spec-quote footer a) {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 4px;
+}
+
+.vs-content :deep(.spec-quote footer a:hover) {
+  color: var(--accent-bright);
+}
+
 .vs-content :deep(.canvas-frame) {
   position: relative;
   display: flex;
@@ -264,6 +350,18 @@ const isDivider = computed(() => Boolean(props.frontmatter.divider));
 
 .vs-content :deep(.canvas-hero) {
   view-transition-name: canvas-hero;
+}
+
+.vs-content :deep(.canvas-solo) {
+  width: 792px;
+}
+
+.vs-content :deep(.canvas-large) {
+  width: 1100px;
+}
+
+.vs-content :deep(canvas.canvas-large) {
+  margin-top: -2rem;
 }
 
 .vs-content :deep(.canvas-donut) {
