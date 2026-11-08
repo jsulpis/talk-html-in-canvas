@@ -1,7 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,900;1,300;1,400&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,900;1,300;1,400&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@700&display=swap");
 
 :root {
-  --slidev-transition-duration: 0.3s;
+  /* Motion tokens: these drive every animation in the deck (CSS and JS). */
+  --motion-duration: 500ms;
+  --motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --slidev-transition-duration: 300ms;
   --bg: #f6f9fd;
   --bg-deep: #edf3fa;
   --surface: #ffffff;
@@ -27,8 +30,8 @@
 ::view-transition-group(vs-title),
 ::view-transition-group(canvas-hero),
 ::view-transition-group(canvas-donut) {
-  animation-duration: 600ms;
-  animation-timing-function: cubic-bezier(0.5, 0, 0.1, 1);
+  animation-duration: var(--motion-duration);
+  animation-timing-function: var(--motion-ease);
 }
 
 ::view-transition-old(vs-title) {

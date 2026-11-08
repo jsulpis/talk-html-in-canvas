@@ -7,13 +7,13 @@ interface TreeNode {
 
 defineProps<{
   tree?: TreeNode[];
-  codeClick?: boolean;
+  codeClick?: boolean | number;
 }>();
 </script>
 
 <template>
   <div class="semantic-panel">
-    <div v-if="codeClick" v-click class="semantic-code">
+    <div v-if="codeClick" v-click="codeClick" class="semantic-code">
       <slot />
     </div>
     <div v-else class="semantic-code">

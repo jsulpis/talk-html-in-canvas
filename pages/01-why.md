@@ -11,7 +11,6 @@ items:
 ---
 layout: vs
 divider: true
-transition: view-transition
 ---
 
 <div class="vs-title">HTML <span class="vs-weak">vs</span> Canvas</div>
@@ -69,7 +68,6 @@ tree:
 layout: vs
 title: Sémantique
 side: canvas
-transition: view-transition
 tree:
   - role: img
     label: '« Une image »'
@@ -152,15 +150,16 @@ tree:
 layout: vs
 title: Interactions
 side: html
+class: cta-pair
 ---
 
-<div v-click="1" class="cta-stage vs-lead">
+<div v-click="1" class="cta-stage">
   <CtaButton />
 </div>
 
 ::right::
 
-<SemanticsPanel code-click>
+<SemanticsPanel :code-click="2">
 
 ```html
 <button type="button">Bonjour !</button>
@@ -186,7 +185,6 @@ highlight: true
 layout: vs
 title: Interactions
 side: canvas
-transition: view-transition
 ---
 
 <div class="canvas-frame canvas-hero canvas-solo">
