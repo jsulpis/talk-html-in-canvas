@@ -7,6 +7,7 @@
 <style scoped>
 .slidev-layout.blueprint {
   position: relative;
+  height: 100%;
   overflow: hidden;
   padding: 0;
   color: var(--text);

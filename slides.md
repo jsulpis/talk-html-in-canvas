@@ -1,9 +1,9 @@
 ---
-theme: default
+theme: none
 title: HTML-in-Canvas
 info: HTML-in-Canvas — DevFest Lyon
 layout: cover
-eyebrow: DEVFEST LYON
+eyebrow: DevFest Lyon
 subtitle: "on pensait que c'était impossible,\nalors ils l'ont fait"
 speaker: Julien Sulpis
 role: Lead Design System Developer

@@ -23,23 +23,12 @@
   box-sizing: border-box;
 }
 
-.vs-title {
-  width: fit-content;
-  margin: 0 auto;
-  color: var(--text);
-  font-size: 5.5rem;
-  font-weight: 600;
-  line-height: 1;
-  text-align: center;
-}
-
-.vs-title {
-  view-transition-name: vs-title;
-}
-
-::view-transition-group(vs-title) {
+/* Document-level pseudo-elements can't live in a scoped component. */
+::view-transition-group(vs-title),
+::view-transition-group(canvas-hero),
+::view-transition-group(canvas-donut) {
   animation-duration: 600ms;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-timing-function: cubic-bezier(0.5, 0, 0.1, 1);
 }
 
 ::view-transition-old(vs-title) {
@@ -50,12 +39,6 @@
 ::view-transition-new(vs-title) {
   animation: none;
   opacity: 1;
-}
-
-.vs-weak {
-  color: var(--text-muted);
-  font-weight: 400;
-  font-size: .8em;
 }
 
 @media (prefers-reduced-motion: reduce) {

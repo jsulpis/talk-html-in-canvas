@@ -55,6 +55,7 @@
   font-weight: 700;
   letter-spacing: 5px;
   line-height: 1.2;
+  text-transform: uppercase;
 }
 
 .slidev-layout.cover .cover-title {

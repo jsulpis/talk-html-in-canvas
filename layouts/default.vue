@@ -23,8 +23,4 @@
   flex-direction: column;
   justify-content: center;
 }
-
-.default-content:has(.vs-eyebrow) {
-  padding-top: 44px;
-}
 </style>
