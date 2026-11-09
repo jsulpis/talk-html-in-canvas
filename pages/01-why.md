@@ -240,3 +240,27 @@ side: canvas
 ---
 
 <PetitCauldronShot class="canvas-large" />
+
+---
+layout: vs
+title: Layout
+subtitle: Flex, Grid, Container Queries...
+side: html
+---
+
+<LayoutDemo />
+
+---
+layout: vs
+title: Layout
+side: canvas
+---
+
+<v-switch at="0">
+  <template #1>
+    <img class="canvas-meme" src="/bon-chance.webp" alt="Mème « Bon chance »" />
+  </template>
+  <template #2>
+    <CanvasOverflow />
+  </template>
+</v-switch>

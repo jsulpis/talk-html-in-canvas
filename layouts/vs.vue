@@ -404,7 +404,7 @@ onSlideEnter(async () => {
   background: radial-gradient(
     ellipse at center,
     #ffffff 0%,
-    var(--bg-deep) 100%
+    var(--bg-deep) 150%
   );
   border: 1px solid var(--line-strong);
   box-shadow: 0 30px 80px #1e355226;
@@ -426,6 +426,12 @@ onSlideEnter(async () => {
 
 .vs-content :deep(.canvas-large) {
   width: 1100px;
+}
+
+.vs-content :deep(.canvas-meme) {
+  display: block;
+  width: auto;
+  height: 500px;
 }
 
 .vs-content :deep(canvas.canvas-large) {
