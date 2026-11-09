@@ -166,7 +166,7 @@ onSlideEnter(async () => {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 44px 140px 150px;
+  padding: 68px 106px 150px;
   color: var(--text-body);
   font-size: 2rem;
   line-height: 1.4;
