@@ -294,7 +294,17 @@ layout: vs
 title: Graphismes
 subtitle: Shaders, simulations... (WebGL)
 side: canvas
+disabled: true
 class: balls-cloud
 ---
 
 <BallsRadiance />
+
+---
+layout: vs
+title: Graphismes
+subtitle: Explosion (WebGL)
+side: canvas
+---
+
+<CubesRadiance />

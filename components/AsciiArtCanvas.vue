@@ -122,7 +122,7 @@ async function render() {
 <style scoped>
 .ascii {
   width: fit-content;
-  margin-top: -8rem;
+  margin-top: -2.2rem;
 }
 
 canvas {
