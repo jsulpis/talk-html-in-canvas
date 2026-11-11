@@ -26,6 +26,16 @@
   box-sizing: border-box;
 }
 
+.dino-art {
+  margin-top: -10rem;
+  color: var(--text-body);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: pre;
+}
+
 /* Document-level pseudo-elements can't live in a scoped component. */
 ::view-transition-group(vs-title),
 ::view-transition-group(canvas-hero),

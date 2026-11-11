@@ -264,3 +264,29 @@ side: canvas
     <CanvasOverflow />
   </template>
 </v-switch>
+
+---
+layout: vs
+title: Graphismes
+subtitle: ASCII Art
+subtitleClick: true
+side: html
+---
+
+<pre v-click="1" class="dino-art" role="img" aria-label="Dessin d'un dinosaure en art ASCII">              __
+             /._)
+      .-^^-./ /
+     /       /
+  __/       /
+ &lt;__.|_|-|_|</pre>
+
+---
+layout: vs
+title: Graphismes
+subtitle: ASCII Art
+side: canvas
+---
+
+<AsciiArtCanvas />
+
+
