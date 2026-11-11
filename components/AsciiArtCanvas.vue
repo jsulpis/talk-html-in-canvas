@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { onSlideEnter } from "@slidev/client";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 
 const COLS = 140;
 // Each brightness band gets a few glyphs to pick from: the random pick keeps
@@ -14,11 +13,24 @@ const SRC = "/devfest-lyon.png";
 
 const canvasEl = ref<HTMLCanvasElement>();
 let rendered = false;
+let observer: ResizeObserver | null = null;
 
-onSlideEnter(async () => {
-  if (rendered) return;
-  rendered = true;
+// Paint on the first real layout size rather than on slide entry: the
+// overview grid mounts every slide without ever entering it.
+onMounted(() => {
+  const box = canvasEl.value!.parentElement!.parentElement!;
+  observer = new ResizeObserver(() => {
+    if (rendered || !box.clientWidth || !box.clientHeight) return;
+    rendered = true;
+    observer?.disconnect();
+    render();
+  });
+  observer.observe(box);
+});
 
+onBeforeUnmount(() => observer?.disconnect());
+
+async function render() {
   const img = new Image();
   img.src = SRC;
   await img.decode();
@@ -40,9 +52,7 @@ onSlideEnter(async () => {
 
   const box = canvas.parentElement!.parentElement!;
   const aspect = (COLS * charAspect) / rows;
-  const width = box.clientHeight
-    ? Math.min(box.clientWidth, box.clientHeight * aspect)
-    : canvas.clientWidth;
+  const width = Math.min(box.clientWidth, box.clientHeight * aspect);
   const height = width / aspect;
   const cellH = height / rows;
   const cellW = cellH * charAspect;
@@ -75,10 +85,6 @@ onSlideEnter(async () => {
 
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillStyle =
-    getComputedStyle(document.documentElement)
-      .getPropertyValue("--text-body")
-      .trim() || "#2c3c55";
 
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < COLS; x++) {
@@ -89,13 +95,18 @@ onSlideEnter(async () => {
       );
       const glyph = glyphFor(ink);
       if (!glyph) continue;
+      // Ink the glyph with the sampled colour, pulled down to a max channel
+      // of 170 so pale colours still read on the light slide.
+      const p = i * 4;
+      const k = Math.min(1, 170 / Math.max(data[p], data[p + 1], data[p + 2], 1));
+      ctx.fillStyle = `rgb(${(data[p] * k) | 0} ${(data[p + 1] * k) | 0} ${(data[p + 2] * k) | 0})`;
       // One glyph in twelve is drawn almost three times too big and bleeds
       // over its neighbours.
-      ctx.font = `${cellH * (Math.random() < 0.1 ? 3 : 1.7)}px "JetBrains Mono", monospace`;
+      ctx.font = `${cellH * (Math.random() < 0.1 ? 3 : 1.5)}px "JetBrains Mono", monospace`;
       ctx.fillText(glyph, (x + 0.5) * cellW, (y + 0.5) * cellH);
     }
   }
-});
+}
 </script>
 
 <template>

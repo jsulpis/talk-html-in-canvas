@@ -283,10 +283,18 @@ side: html
 ---
 layout: vs
 title: Graphismes
-subtitle: ASCII Art
+subtitle: ASCII Art (Canvas 2D)
 side: canvas
 ---
 
 <AsciiArtCanvas />
 
+---
+layout: vs
+title: Graphismes
+subtitle: Shaders, simulations... (WebGL)
+side: canvas
+class: balls-cloud
+---
 
+<BallsRadiance />

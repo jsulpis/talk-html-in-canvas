@@ -117,7 +117,8 @@ onSlideEnter(async () => {
             :class="{ 'is-active': isCanvas }"
           >Canvas</span>
         </div>
-        <p v-if="subtitle" class="vs-subtitle">{{ subtitle }}</p>
+        <p v-if="subtitle && !frontmatter.subtitleClick" class="vs-subtitle">{{ subtitle }}</p>
+        <p v-else-if="subtitle" v-click="1" class="vs-subtitle">{{ subtitle }}</p>
       </header>
 
       <div
@@ -173,6 +174,8 @@ onSlideEnter(async () => {
 }
 
 .vs-header {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
