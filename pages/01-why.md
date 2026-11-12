@@ -340,3 +340,17 @@ side: canvas
 
 <DisplacementDecomposition name="/red_brick_03" />
 
+---
+layout: default
+---
+
+<CompareTable />
+
+
+---
+layout: vs
+divider: true
+clicks: 1
+---
+
+<HtmlInCanvasTitle />

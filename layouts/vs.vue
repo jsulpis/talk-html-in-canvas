@@ -149,16 +149,22 @@ onSlideEnter(async () => {
   width: fit-content;
   margin: 0 auto;
   color: var(--text);
-  font-size: 5.5rem;
+  font-size: 7rem;
   font-weight: 600;
   line-height: 1;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .6ch;
 }
 
 .vs-divider :deep(.vs-weak) {
   color: var(--text-muted);
   font-size: 0.8em;
-  font-weight: 400;
+  font-weight: 600;
+  letter-spacing: -.1em;
+  margin-right: .35ch;
 }
 
 .vs-content {
