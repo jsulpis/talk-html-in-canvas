@@ -7,6 +7,7 @@ import {
   createFloatDataTexture,
   glCanvas,
 } from "@radiancejs/gl";
+import { mat4 } from "gl-matrix";
 
 type Ball = {
   x: number; y: number; z: number;
@@ -36,7 +37,8 @@ const SLIDE_ASPECT = 16 / 9;
 
 const COUNT = 96;
 const TEXELS = 3;
-const TAN_HALF_FOV = Math.tan((38 / 2) * (Math.PI / 180));
+const FOV = (38 * Math.PI) / 180;
+const TAN_HALF_FOV = Math.tan(FOV / 2);
 const CAMERA_Z = 13;
 
 const PALETTE: Array<{
@@ -257,26 +259,12 @@ function createIcosphere(subdivisions: number) {
 const sphere = createIcosphere(3);
 const ids = new Float32Array(COUNT).map((_, i) => i);
 
-function perspective(fov: number, aspect: number, near: number, far: number) {
-  const f = 1 / Math.tan(fov / 2);
-  const nf = 1 / (near - far);
-  return [
-    f / aspect, 0, 0, 0,
-    0, f, 0, 0,
-    0, 0, (far + near) * nf, -1,
-    0, 0, 2 * far * near * nf, 0,
-  ];
-}
+// The camera only translates, so the view matrix is computed once.
+const VIEW = mat4.fromTranslation(mat4.create(), [0, 0, -CAMERA_Z]);
 
 function viewProjection(aspect: number) {
-  const p = perspective((38 * Math.PI) / 180, aspect, 0.1, 100);
-  // p * translate(0, 0, -CAMERA_Z), column-major.
-  const out = new Float32Array(p);
-  out[12] = -CAMERA_Z * p[8] + p[12];
-  out[13] = -CAMERA_Z * p[9] + p[13];
-  out[14] = -CAMERA_Z * p[10] + p[14];
-  out[15] = -CAMERA_Z * p[11] + p[15];
-  return out;
+  const projection = mat4.perspective(mat4.create(), FOV, aspect, 0.1, 100);
+  return mat4.multiply(mat4.create(), projection, VIEW);
 }
 
 function makeBalls() {

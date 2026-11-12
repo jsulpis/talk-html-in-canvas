@@ -293,6 +293,28 @@ side: canvas
 ---
 layout: vs
 title: Graphismes
+subtitle: "Canvas WebGL : explosion"
+side: canvas
+---
+
+<CubesRadiance />
+
+
+---
+layout: vs
+title: Graphismes
+subtitle: "Canvas WebGL : shaders, simulations..."
+side: canvas
+disabled: true
+class: balls-cloud
+---
+
+<BallsRadiance />
+
+
+---
+layout: vs
+title: Graphismes
 subtitle: "Canvas WebGL : modèle 3D"
 side: canvas
 ---
@@ -318,22 +340,3 @@ side: canvas
 
 <DisplacementDecomposition name="/red_brick_03" />
 
----
-layout: vs
-title: Graphismes
-subtitle: "Canvas WebGL : shaders, simulations..."
-side: canvas
-disabled: true
-class: balls-cloud
----
-
-<BallsRadiance />
-
----
-layout: vs
-title: Graphismes
-subtitle: "Canvas WebGL : explosion"
-side: canvas
----
-
-<CubesRadiance />

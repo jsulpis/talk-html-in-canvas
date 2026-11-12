@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useSlideContext } from "@slidev/client";
 import { showOverview } from "@slidev/client/state/storage.ts";
 import { glCanvas, loadTexture, pingPongFBO } from "@radiancejs/gl";
+import { mat4 } from "gl-matrix";
 
 const SRC = "/devfest-lyon.png";
 
@@ -52,26 +53,12 @@ let lastFrame = 0;
 const pointer = { x: 999, y: 999, inside: false };
 const prevPointer = { x: 999, y: 999 };
 
-function perspective(fov: number, aspect: number, near: number, far: number) {
-  const f = 1 / Math.tan(fov / 2);
-  const nf = 1 / (near - far);
-  return [
-    f / aspect, 0, 0, 0,
-    0, f, 0, 0,
-    0, 0, (far + near) * nf, -1,
-    0, 0, 2 * far * near * nf, 0,
-  ];
-}
+// The camera only translates, so the view matrix is computed once.
+const VIEW = mat4.fromTranslation(mat4.create(), [0, -CAMERA_Y, -CAMERA_Z]);
 
-// p * translate(0, CAMERA_Y, -CAMERA_Z), column-major.
 function viewProjection(aspect: number) {
-  const p = perspective(FOV, aspect, 0.1, 100);
-  const out = new Float32Array(p);
-  out[12] = -CAMERA_Z * p[8] + p[12];
-  out[13] = -CAMERA_Y * p[5] - CAMERA_Z * p[9] + p[13];
-  out[14] = -CAMERA_Z * p[10] + p[14];
-  out[15] = -CAMERA_Z * p[11] + p[15];
-  return out;
+  const projection = mat4.perspective(mat4.create(), FOV, aspect, 0.1, 100);
+  return mat4.multiply(mat4.create(), projection, VIEW);
 }
 
 const FACES: { normal: Vec3; corners: Vec3[]; front: boolean }[] = [
