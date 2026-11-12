@@ -2,11 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useSlideContext } from "@slidev/client";
 import { showOverview } from "@slidev/client/state/storage.ts";
-import {
-  createFloatDataTexture,
-  glCanvas,
-  loadTexture,
-} from "@radiancejs/gl";
+import { glCanvas, loadTexture, pingPongFBO } from "@radiancejs/gl";
 
 const SRC = "/devfest-lyon.png";
 
@@ -126,65 +122,22 @@ function makeCells() {
 const cube = makeGeometry();
 const cells = makeCells();
 
-type Cube = {
-  hx: number;
-  hy: number;
-  x: number;
-  y: number;
-  z: number;
-  vx: number;
-  vy: number;
-  vz: number;
-};
-
 const CELL_X = PLANE_WIDTH / COLS;
 const CELL_Y = PLANE_HEIGHT / ROWS;
-const cubes: Cube[] = [];
-// Each cube gets its own direction in space, so a repulsion scatters them
-// instead of only pushing them radially.
-const dirs = new Float32Array(COLS * ROWS * 3);
+const CUBE_COUNT = COLS * ROWS;
 
-let seed = 7;
-const random = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-
-for (let row = 0; row < ROWS; row++) {
-  for (let col = 0; col < COLS; col++) {
-    const hx = (col + 0.5) * CELL_X - PLANE_WIDTH / 2;
-    const hy = PLANE_HEIGHT / 2 - (row + 0.5) * CELL_Y;
-    cubes.push({ hx, hy, x: hx, y: hy, z: 0, vx: 0, vy: 0, vz: 0 });
-
-    const i = row * COLS + col;
-    const dx = random() * 2 - 1;
-    const dy = random() * 2 - 1;
-    const dz = random() * 2 - 1;
-    const len = Math.hypot(dx, dy, dz) || 1;
-    dirs[i * 3] = dx / len;
-    dirs[i * 3 + 1] = dy / len;
-    dirs[i * 3 + 2] = dz / len;
+// The simulation lives entirely on the GPU (see `simFragment`): two texels per
+// cube, even = position, odd = velocity. The GPU starts from this grid laid flat.
+function makeInitialState() {
+  const data = new Float32Array(CUBE_COUNT * 8);
+  for (let id = 0; id < CUBE_COUNT; id++) {
+    const col = id % COLS;
+    const row = Math.floor(id / COLS);
+    data[id * 8] = (col + 0.5) * CELL_X - PLANE_WIDTH / 2;
+    data[id * 8 + 1] = PLANE_HEIGHT / 2 - (row + 0.5) * CELL_Y;
   }
+  return data;
 }
-
-// Two texels per cube: position and velocity. The CPU integrates the springs,
-// the vertex shader reads the result back through texelFetch.
-const stateTexture = createFloatDataTexture(new Float32Array(cubes.length * 8));
-const stateData = stateTexture.data as Float32Array;
-
-function writeState() {
-  for (let i = 0; i < cubes.length; i++) {
-    const c = cubes[i];
-    const o = i * 8;
-    stateData[o] = c.x;
-    stateData[o + 1] = c.y;
-    stateData[o + 2] = c.z;
-    stateData[o + 3] = 0;
-    stateData[o + 4] = c.vx;
-    stateData[o + 5] = c.vy;
-    stateData[o + 6] = c.vz;
-    stateData[o + 7] = 0;
-  }
-}
-
-writeState();
 
 const vertex = /* glsl */ `
   in vec3 aPos;
@@ -298,12 +251,113 @@ const fragment = /* glsl */ `
   }
 `;
 
+const simFragment = /* glsl */ `
+  uniform sampler2D tState;
+  uniform vec2 uPlane;
+  uniform vec2 uGrid;
+  uniform vec2 uPointer;
+  uniform float uPointerOn;
+  uniform float uSpeed;
+  uniform float uDt;
+  uniform float uDamping;
+  uniform float uReset;
+
+  out vec4 outColor;
+
+  const float SPRING = ${SPRING.toFixed(3)};
+  const float Z_SPRING = ${Z_SPRING.toFixed(3)};
+  const float REPEL_RADIUS = ${REPEL_RADIUS.toFixed(3)};
+  const float REPEL_FORCE = ${REPEL_FORCE.toFixed(3)};
+
+  float hash(float n) {
+    return fract(sin(n * 127.1) * 43758.5453);
+  }
+
+  // Each cube's own direction in space, so a repulsion scatters them instead
+  // of only pushing them radially.
+  vec3 cubeDir(int id) {
+    vec3 d = vec3(
+      hash(float(id) + 0.1),
+      hash(float(id) + 11.7),
+      hash(float(id) + 23.3)
+    ) - 0.5;
+    return normalize(d + vec3(0.001));
+  }
+
+  void main() {
+    ivec2 coord = ivec2(gl_FragCoord.xy);
+    int width = textureSize(tState, 0).x;
+    int index = coord.y * width + coord.x;
+    int count = int(uGrid.x * uGrid.y);
+    // The texture is padded to a square; pad texels are never read.
+    if (index >= count * 2) {
+      outColor = vec4(-1.0);
+      return;
+    }
+
+    int id = index / 2;
+    int col = id % int(uGrid.x);
+    int row = id / int(uGrid.x);
+    vec2 cell = uPlane / uGrid;
+    vec2 home = vec2(
+      (float(col) + 0.5) * cell.x - uPlane.x * 0.5,
+      uPlane.y * 0.5 - (float(row) + 0.5) * cell.y
+    );
+
+    int pIndex = id * 2;
+    int vIndex = pIndex + 1;
+    vec3 pos = texelFetch(tState, ivec2(pIndex % width, pIndex / width), 0).xyz;
+    vec3 vel = texelFetch(tState, ivec2(vIndex % width, vIndex / width), 0).xyz;
+
+    if (uReset > 0.5) {
+      outColor = index == pIndex ? vec4(home, 0.0, 0.0) : vec4(0.0);
+      return;
+    }
+
+    if (uPointerOn > 0.5 && uSpeed > 0.01) {
+      vec2 d = pos.xy - uPointer;
+      float dist = length(d);
+      if (dist < REPEL_RADIUS && dist > 0.0001) {
+        float ratio = dist / REPEL_RADIUS;
+        float falloff = 1.0 - ratio * ratio * (3.0 - 2.0 * ratio);
+        float push = falloff * REPEL_FORCE * (1.0 + uSpeed * 2.0) * uDt;
+        vec3 dir = cubeDir(id);
+        // Mostly radial, plus this cube's own direction in space.
+        vel.xy += (d / dist + dir.xy) * push;
+        vel.z += dir.z * push * 2.0;
+      }
+    }
+
+    // Elastic pull back to the cube's place in the picture.
+    vel.xy += (home - pos.xy) * SPRING * uDt;
+    vel.z += -pos.z * SPRING * Z_SPRING * uDt;
+    vel *= uDamping;
+    pos += vel * uDt;
+
+    // Snap back to the exact grid so the flat picture stays crisp.
+    if (
+      abs(pos.x - home.x) < 0.0005 &&
+      abs(pos.y - home.y) < 0.0005 &&
+      abs(pos.z) < 0.0005 &&
+      abs(vel.x) + abs(vel.y) + abs(vel.z) < 0.0005
+    ) {
+      pos = vec3(home, 0.0);
+      vel = vec3(0.0);
+    }
+
+    outColor = index == pIndex ? vec4(pos, 0.0) : vec4(vel, 0.0);
+  }
+`;
+
 const imageTexture = loadTexture(SRC, {
   generateMipmaps: true,
   anisotropy: 4,
 });
 
-function step(scale: number) {
+let sim: ReturnType<typeof pingPongFBO> | null = null;
+
+function stepSim(scale: number) {
+  if (!sim) return;
   const dx = pointer.x - prevPointer.x;
   const dy = pointer.y - prevPointer.y;
   let speed = pointer.inside ? Math.hypot(dx, dy) / scale : 0;
@@ -312,56 +366,24 @@ function step(scale: number) {
   prevPointer.y = pointer.y;
 
   const s = scale * SPEED;
-  const damping = Math.pow(DAMPING, s);
-
-  for (let i = 0; i < cubes.length; i++) {
-    const c = cubes[i];
-
-    if (pointer.inside && speed > 0.01) {
-      const dxm = c.x - pointer.x;
-      const dym = c.y - pointer.y;
-      const dist = Math.hypot(dxm, dym);
-      if (dist < REPEL_RADIUS && dist > 0.0001) {
-        const ratio = dist / REPEL_RADIUS;
-        const falloff = 1 - ratio * ratio * (3 - 2 * ratio);
-        const push = falloff * REPEL_FORCE * (1 + speed * 2.0) * s;
-        // Mostly radial, plus this cube's own direction in space.
-        c.vx += (dxm / dist + dirs[i * 3]) * push;
-        c.vy += (dym / dist + dirs[i * 3 + 1]) * push;
-        c.vz += dirs[i * 3 + 2] * push * 2.0;
-      }
-    }
-
-    // Elastic pull back to the cube's place in the picture.
-    c.vx += (c.hx - c.x) * SPRING * s;
-    c.vy += (c.hy - c.y) * SPRING * s;
-    c.vz += (0 - c.z) * SPRING * Z_SPRING * s;
-
-    c.vx *= damping;
-    c.vy *= damping;
-    c.vz *= damping;
-    c.x += c.vx * s;
-    c.y += c.vy * s;
-    c.z += c.vz * s;
-
-    // Snap back to the exact grid so the flat picture stays crisp.
-    if (
-      Math.abs(c.x - c.hx) < 0.0005 &&
-      Math.abs(c.y - c.hy) < 0.0005 &&
-      Math.abs(c.z) < 0.0005 &&
-      Math.abs(c.vx) + Math.abs(c.vy) + Math.abs(c.vz) < 0.0005
-    ) {
-      c.x = c.hx;
-      c.y = c.hy;
-      c.z = 0;
-      c.vx = 0;
-      c.vy = 0;
-      c.vz = 0;
-    }
-  }
-
-  writeState();
+  sim.uniforms.uPointer = [pointer.x, pointer.y];
+  sim.uniforms.uPointerOn = pointer.inside ? 1 : 0;
+  sim.uniforms.uSpeed = speed;
+  sim.uniforms.uDt = s;
+  sim.uniforms.uDamping = Math.pow(DAMPING, s);
+  sim.render();
 }
+
+// Write the flat grid into both buffers (ping-pong swaps them), so the next
+// render — and any still frame — shows the untouched picture.
+function resetSim() {
+  if (!sim) return;
+  sim.uniforms.uReset = 1;
+  sim.render();
+  sim.render();
+  sim.uniforms.uReset = 0;
+}
+
 
 function frame(now: number) {
   raf = requestAnimationFrame(frame);
@@ -369,7 +391,7 @@ function frame(now: number) {
   lastFrame = now;
 
   if (!renderer || !canvas.value?.clientWidth) return;
-  step(scale);
+  stepSim(scale);
   renderer.render();
 }
 
@@ -393,15 +415,7 @@ function stop() {
   running = false;
   cancelAnimationFrame(raf);
   // Leave the overview preview and the next visit with the flat picture.
-  for (const c of cubes) {
-    c.x = c.hx;
-    c.y = c.hy;
-    c.z = 0;
-    c.vx = 0;
-    c.vy = 0;
-    c.vz = 0;
-  }
-  writeState();
+  resetSim();
   renderer?.render();
 }
 
@@ -465,7 +479,7 @@ function init() {
     },
     uniforms: {
       uImage: imageTexture,
-      uState: stateTexture,
+      uState: () => sim!.texture,
       uViewProj: ({ canvasResolution }) =>
         viewProjection(canvasResolution[0] / canvasResolution[1]),
       uPlane: [PLANE_WIDTH, PLANE_HEIGHT] as Vec2,
@@ -482,6 +496,23 @@ function init() {
 
   renderer.gl.clearColor(0, 0, 0, 0);
   resize();
+
+  sim = pingPongFBO({
+    gl: renderer.gl,
+    fragment: simFragment,
+    dataTexture: { name: "tState", initialData: makeInitialState() },
+    uniforms: {
+      uPointer: [0, 0] as Vec2,
+      uPointerOn: 0,
+      uSpeed: 0,
+      uDt: 0,
+      uDamping: 1,
+      uPlane: [PLANE_WIDTH, PLANE_HEIGHT] as Vec2,
+      uGrid: [COLS, ROWS] as Vec2,
+      uReset: 0,
+    },
+  });
+  resetSim();
 
   if (active.value) {
     start();
@@ -510,6 +541,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   stop();
   observer?.disconnect();
+  sim?.dispose();
   renderer?.dispose();
 });
 </script>

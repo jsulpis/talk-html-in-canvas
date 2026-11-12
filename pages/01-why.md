@@ -303,7 +303,7 @@ class: balls-cloud
 ---
 layout: vs
 title: Graphismes
-subtitle: Explosion (WebGL)
+subtitle: "Canvas WebGL : explosion"
 side: canvas
 ---
 
