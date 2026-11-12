@@ -283,16 +283,45 @@ side: html
 ---
 layout: vs
 title: Graphismes
-subtitle: ASCII Art (Canvas 2D)
+subtitle: "Canvas 2D : ASCII Art"
 side: canvas
 ---
 
 <AsciiArtCanvas />
 
+
 ---
 layout: vs
 title: Graphismes
-subtitle: Shaders, simulations... (WebGL)
+subtitle: "Canvas WebGL : modèle 3D"
+side: canvas
+---
+
+<ModelTurntable src="/duck.obj" />
+
+---
+layout: vs
+title: Graphismes
+subtitle: "Canvas WebGL : couleur + géométrie"
+side: canvas
+---
+
+<ModelDecomposition src="/duck.obj" albedo="/duck_diffuse.png" />
+
+
+---
+layout: vs
+title: Graphismes
+subtitle: "Canvas WebGL : texture(s)"
+side: canvas
+---
+
+<DisplacementDecomposition name="/red_brick_03" />
+
+---
+layout: vs
+title: Graphismes
+subtitle: "Canvas WebGL : shaders, simulations..."
 side: canvas
 disabled: true
 class: balls-cloud

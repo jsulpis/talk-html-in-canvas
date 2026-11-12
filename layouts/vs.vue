@@ -180,7 +180,6 @@ onSlideEnter(async () => {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   column-gap: 40px;
-  margin-bottom: 48px;
 }
 
 .vs-content h1 {
@@ -435,10 +434,6 @@ onSlideEnter(async () => {
   display: block;
   width: auto;
   height: 500px;
-}
-
-.vs-content :deep(canvas.canvas-large) {
-  margin-top: -2rem;
 }
 
 .vs-content :deep(.canvas-donut) {
