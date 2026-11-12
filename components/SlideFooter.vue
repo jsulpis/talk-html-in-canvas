@@ -7,10 +7,10 @@ defineProps<{ label: string }>()
     <span>{{ label }}</span>
     <nav aria-label="Slide navigation">
       <button aria-label="Previous slide" @click="$slidev.nav.prev">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m7-7-7 7 7 7" /></svg>
+        <lucide-arrow-left/>
       </button>
       <button aria-label="Next slide" @click="$slidev.nav.next">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
+        <lucide-arrow-right/>
       </button>
     </nav>
   </footer>
@@ -50,15 +50,5 @@ button {
 
 button:hover {
   color: var(--accent-bright);
-}
-
-svg {
-  width: 28px;
-  height: 28px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
 }
 </style>
