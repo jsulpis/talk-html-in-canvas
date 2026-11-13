@@ -29,6 +29,8 @@ defineProps<{ label: string }>()
   color: var(--text-muted);
   font-family: 'JetBrains Mono', monospace;
   font-size: 1.5rem;
+  /* Own compositor layer: keeps the footer out of the repaints shown in the devtools during the talk. */
+  will-change: transform;
 }
 
 nav {

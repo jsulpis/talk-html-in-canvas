@@ -1,10 +1,15 @@
+<script setup lang="ts">
+defineProps<{ hic?: boolean }>();
+</script>
+
 <template>
-  <table class="compare-table">
+  <table class="compare-table" :class="{ 'compare-table--hic': hic }">
     <thead>
       <tr>
         <th scope="col"></th>
         <th scope="col">HTML</th>
         <th scope="col">Canvas</th>
+        <th v-if="hic" scope="col" class="is-hic">HTML-in-Canvas</th>
       </tr>
     </thead>
     <tbody>
@@ -12,21 +17,25 @@
         <th scope="row">Sémantique</th>
         <td>✅&ensp;Natif</td>
         <td>⚠️&ensp;Limitée</td>
+        <td v-if="hic" class="is-hic">✅&ensp;Natif</td>
       </tr>
       <tr>
         <th scope="row">Interactions</th>
         <td>✅&ensp;Natif</td>
         <td>⚠️&ensp;À coder</td>
+        <td v-if="hic" class="is-hic">✅&ensp;Natif</td>
       </tr>
       <tr>
         <th scope="row">Layout</th>
         <td>✅&ensp;Flex, Grid...</td>
         <td>⚠️&ensp;À coder</td>
+        <td v-if="hic" class="is-hic">✅&ensp;Flex, Grid...</td>
       </tr>
       <tr>
         <th scope="row">Graphismes</th>
         <td>⚠️&ensp;Limités</td>
         <td>✅&ensp;Avancés (2D & 3D)</td>
+        <td v-if="hic" class="is-hic">✅&ensp;Avancés (2D & 3D)</td>
       </tr>
     </tbody>
   </table>
@@ -78,5 +87,32 @@
 .compare-table tbody tr:last-child th,
 .compare-table tbody tr:last-child td {
   border-bottom: 0;
+}
+
+.compare-table--hic {
+  font-size: 1.6rem;
+}
+
+.compare-table--hic th,
+.compare-table--hic td {
+  padding: 22px 26px;
+}
+
+.compare-table--hic thead th {
+  font-size: 2.2rem;
+}
+
+.compare-table--hic thead th:first-child {
+  width: 260px;
+}
+
+.compare-table--hic .is-hic {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.compare-table--hic thead .is-hic {
+  color: var(--text);
+  font-weight: 700;
 }
 </style>

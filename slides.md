@@ -19,3 +19,7 @@ duration: 35min
 ---
 src: ./pages/01-why.md
 ---
+
+---
+src: ./pages/02-what.md
+---
