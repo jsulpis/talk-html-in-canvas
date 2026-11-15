@@ -19,13 +19,13 @@ clicks: 3
 layout: default
 ---
 
-<CompareTable hic />
+<AsciiText />
 
 ---
 layout: default
 ---
 
-<AsciiText />
+<CompareTable hic />
 
 ---
 layout: default
