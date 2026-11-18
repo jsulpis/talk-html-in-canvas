@@ -43,7 +43,7 @@ function draw() {
   ctx.shadowColor = hovered.value ? "rgba(37, 99, 235, 0.35)" : "rgba(37, 99, 235, 0.2)";
   ctx.shadowBlur = hovered.value ? 40 : 28;
   ctx.shadowOffsetY = hovered.value ? 26 : 18;
-  ctx.fillStyle = hovered.value ? "#1d4ed8" : "#2563eb";
+  ctx.fillStyle = hovered.value ? "#1d67d8" : "#2578eb";
   ctx.fill(buttonPath);
   ctx.restore();
 

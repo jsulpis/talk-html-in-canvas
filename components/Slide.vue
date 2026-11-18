@@ -36,6 +36,6 @@
 .slidev-layout.blueprint::after {
   background:
     radial-gradient(ellipse at 85% 25%, #dcebfc 0%, #dcebfc00 60%),
-    radial-gradient(ellipse at center, transparent 35%, #e2ebf599 78%, #d5e3f0e6 100%);
+    radial-gradient(ellipse at center, transparent 35%, #e2eef599 78%, #d5e3f0e6 100%);
 }
 </style>

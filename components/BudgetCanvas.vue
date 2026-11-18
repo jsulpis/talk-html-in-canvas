@@ -6,19 +6,19 @@
     </div>
     <div class="budget-body">
       <svg class="budget-donut" viewBox="0 0 160 160" aria-hidden="true">
-        <circle cx="80" cy="80" r="58" fill="none" stroke="#e2ebf5" stroke-width="28" />
-        <circle cx="80" cy="80" r="58" fill="none" stroke="#1d4ed8" stroke-width="28" pathLength="100" stroke-dasharray="30 70" transform="rotate(-90 80 80)" />
-        <circle cx="80" cy="80" r="58" fill="none" stroke="#2563eb" stroke-width="28" pathLength="100" stroke-dasharray="25 75" stroke-dashoffset="-30" transform="rotate(-90 80 80)" />
-        <circle cx="80" cy="80" r="58" fill="none" stroke="#3b82f6" stroke-width="28" pathLength="100" stroke-dasharray="20 80" stroke-dashoffset="-55" transform="rotate(-90 80 80)" />
-        <circle cx="80" cy="80" r="58" fill="none" stroke="#60a5fa" stroke-width="28" pathLength="100" stroke-dasharray="15 85" stroke-dashoffset="-75" transform="rotate(-90 80 80)" />
-        <circle cx="80" cy="80" r="58" fill="none" stroke="#93c5fd" stroke-width="28" pathLength="100" stroke-dasharray="10 90" stroke-dashoffset="-90" transform="rotate(-90 80 80)" />
+        <circle cx="80" cy="80" r="58" fill="none" stroke="#e2eef5" stroke-width="28" />
+        <circle cx="80" cy="80" r="58" fill="none" stroke="#1d67d8" stroke-width="28" pathLength="100" stroke-dasharray="30 70" transform="rotate(-90 80 80)" />
+        <circle cx="80" cy="80" r="58" fill="none" stroke="#2578eb" stroke-width="28" pathLength="100" stroke-dasharray="25 75" stroke-dashoffset="-30" transform="rotate(-90 80 80)" />
+        <circle cx="80" cy="80" r="58" fill="none" stroke="#3b98f6" stroke-width="28" pathLength="100" stroke-dasharray="20 80" stroke-dashoffset="-55" transform="rotate(-90 80 80)" />
+        <circle cx="80" cy="80" r="58" fill="none" stroke="#60b9fa" stroke-width="28" pathLength="100" stroke-dasharray="15 85" stroke-dashoffset="-75" transform="rotate(-90 80 80)" />
+        <circle cx="80" cy="80" r="58" fill="none" stroke="#93d3fd" stroke-width="28" pathLength="100" stroke-dasharray="10 90" stroke-dashoffset="-90" transform="rotate(-90 80 80)" />
       </svg>
       <ul class="budget-legend">
-        <li><i style="background: #1d4ed8" /><span>Lieu</span><small>18 000 €</small></li>
-        <li><i style="background: #2563eb" /><span>Restauration</span><small>15 000 €</small></li>
-        <li><i style="background: #3b82f6" /><span>Intervenants</span><small>12 000 €</small></li>
-        <li><i style="background: #60a5fa" /><span>Matériel</span><small>9 000 €</small></li>
-        <li><i style="background: #93c5fd" /><span>Communication</span><small>6 000 €</small></li>
+        <li><i style="background: #1d67d8" /><span>Lieu</span><small>18 000 €</small></li>
+        <li><i style="background: #2578eb" /><span>Restauration</span><small>15 000 €</small></li>
+        <li><i style="background: #3b98f6" /><span>Intervenants</span><small>12 000 €</small></li>
+        <li><i style="background: #60b9fa" /><span>Matériel</span><small>9 000 €</small></li>
+        <li><i style="background: #93d3fd" /><span>Communication</span><small>6 000 €</small></li>
       </ul>
     </div>
   </div>

@@ -107,7 +107,7 @@ function throwEmojis() {
   background: var(--accent);
   border: 0;
   border-radius: 8px;
-  box-shadow: 0 18px 50px #2563eb33;
+  box-shadow: 0 18px 50px #2578eb33;
   cursor: pointer;
   transition:
     background 150ms ease,
@@ -117,13 +117,13 @@ function throwEmojis() {
 
 .cta-demo:hover {
   background: var(--accent-bright);
-  box-shadow: 0 26px 60px #2563eb59;
+  box-shadow: 0 26px 60px #2578eb59;
   transform: translateY(-3px);
 }
 
 .cta-demo:active {
-  background: #1e3a8a;
-  box-shadow: 0 8px 18px #2563eb26;
+  background: #1e498a;
+  box-shadow: 0 8px 18px #2578eb26;
   transform: translateY(3px);
 }
 

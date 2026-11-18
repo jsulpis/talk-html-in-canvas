@@ -175,7 +175,7 @@ const steps = [
   z-index: -1;
   background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
   border: 1px solid var(--accent);
-  box-shadow: 0 18px 40px #2563eb26;
+  box-shadow: 0 18px 40px #2578eb26;
 }
 
 .standards-highlight::before {

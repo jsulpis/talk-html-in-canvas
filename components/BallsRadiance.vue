@@ -45,14 +45,14 @@ const PALETTE: Array<{
   base: [number, number, number];
   shade: [number, number, number];
 }> = [
-  { base: [236, 239, 255], shade: [190, 200, 245] }, // pastel
-  { base: [168, 193, 255], shade: [112, 140, 218] }, // light
-  { base: [47, 105, 255], shade: [22, 54, 180] },    // medium
-  { base: [10, 51, 191], shade: [8, 30, 125] },      // deep
+  { base: [236, 241, 255], shade: [190, 207, 245] }, // pastel
+  { base: [168, 206, 255], shade: [112, 150, 218] }, // light
+  { base: [47, 144, 255], shade: [22, 70, 180] },    // medium
+  { base: [10, 79, 191], shade: [8, 40, 125] },      // deep
 ];
 const GLASS = {
-  base: [77, 128, 255] as [number, number, number],
-  shade: [36, 72, 180] as [number, number, number],
+  base: [77, 154, 255] as [number, number, number],
+  shade: [36, 90, 180] as [number, number, number],
 };
 
 const params = {

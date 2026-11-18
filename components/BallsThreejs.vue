@@ -37,11 +37,11 @@ type Ball = {
 const canvas = ref<HTMLCanvasElement | null>(null);
 
 const PALETTE = {
-  pastel: new THREE.Color("#ECEFFF"),
-  light: new THREE.Color("#A8C1FF"),
-  medium: new THREE.Color("#2F69FF"),
-  deep: new THREE.Color("#0A33BF"),
-  glass: new THREE.Color("#4D80FF"),
+  pastel: new THREE.Color("#ecf1ff"),
+  light: new THREE.Color("#a8ceff"),
+  medium: new THREE.Color("#2f90ff"),
+  deep: new THREE.Color("#0a4fbf"),
+  glass: new THREE.Color("#4d9aff"),
 };
 
 const params = {
@@ -477,8 +477,8 @@ onBeforeUnmount(() => {
   background: radial-gradient(
     circle at 50% 46%,
     #fff 0%,
-    #eef2ff 36%,
-    #d8e3fa 100%
+    #eef5ff 36%,
+    #d8ebfa 100%
   );
 }
 

@@ -352,7 +352,7 @@ onSlideEnter(async () => {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 8px;
-  box-shadow: 0 18px 50px #2563eb26;
+  box-shadow: 0 18px 50px #2578eb26;
   transition:
     border-color var(--motion-duration) var(--motion-ease),
     box-shadow var(--motion-duration) var(--motion-ease);
@@ -360,13 +360,13 @@ onSlideEnter(async () => {
 
 .vs-content :deep(.text-demo:hover) {
   border-color: var(--accent);
-  box-shadow: 0 22px 55px #2563eb40;
+  box-shadow: 0 22px 55px #2578eb40;
 }
 
 .vs-content :deep(.text-demo:focus) {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px #2563eb26;
+  box-shadow: 0 0 0 4px #2578eb26;
 }
 
 .vs-content :deep(.spec-quote) {

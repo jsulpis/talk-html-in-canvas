@@ -42,8 +42,8 @@
   border: 10px solid white;
   border-radius: 6px;
   box-shadow:
-    0 0 0 4px #1d4ed826,
-    0 0 40px #1d4ed866;
+    0 0 0 4px #1d67d826,
+    0 0 40px #1d67d866;
   pointer-events: none;
   transition:
     opacity 150ms ease,
