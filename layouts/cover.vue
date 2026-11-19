@@ -3,7 +3,7 @@
     <main class="cover-main">
       <section class="cover-copy">
         <div class="cover-heading">
-          <p class="cover-eyebrow">{{ $frontmatter.eyebrow }}</p>
+          <p v-if="$event.name" class="cover-eyebrow">{{ $event.name }}</p>
           <div>
             <h1 class="cover-title">{{ $frontmatter.title }}</h1>
             <p class="cover-subtitle">{{ $frontmatter.subtitle }}</p>
@@ -15,11 +15,11 @@
           <i class="cover-divider" />
           <span class="cover-role">{{ $frontmatter.role }}</span>
         </div>
-        <img class="cover-logo" src="/Scaleway-Logo.png" alt="Scaleway">
+        <img v-if="$brand.logoHorizontal" class="cover-logo" :src="$brand.logoHorizontal" alt="Scaleway">
       </section>
       <CanvasBlueprint />
     </main>
-    <SlideFooter label="04/12/2026" />
+    <SlideFooter :label="$event.date ?? ''" />
   </Slide>
 </template>
 
@@ -27,7 +27,7 @@
 .cover-main {
   position: absolute;
   z-index: 1;
-  top: 254px;
+  top: 230px;
   left: 97px;
   display: flex;
   align-items: center;
@@ -71,7 +71,7 @@
   margin: .75rem 0 0;
   color: var(--text-secondary);
   font-family: Inter, sans-serif;
-  font-size: 3.25rem;
+  font-size: 3.5rem;
   font-weight: 400;
   font-style: italic;
   line-height: 1.15;
@@ -94,25 +94,25 @@
 
 .cover-speaker {
   color: var(--text-body);
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   font-weight: 600;
 }
 
 .cover-divider {
-  width: 2px;
-  height: 30px;
+  width: 3px;
+  height: 40px;
   background: var(--text-muted);
 }
 
 .cover-role {
   color: var(--text-muted);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 1.625rem;
+  font-size: 2rem;
 }
 
 .cover-logo {
   display: block;
-  width: 323px;
+  width: 380px;
   height: auto;
 }
 </style>

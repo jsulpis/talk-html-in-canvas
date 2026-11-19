@@ -1,17 +1,18 @@
-import { defineAppSetup } from '@slidev/types'
+import { defineAppSetup } from "@slidev/types";
+import events from "./events";
+import { preventToggleFullscreen } from "./fullscreenPatch";
 
-// Slidev hardcodes `f` → fullscreen (no config to disable it).
-// Swallow it in the earliest phase (window capture) so it never reaches
-// Slidev's handler, while leaving the browser shortcut (⌘F / Ctrl+F) intact.
-export default defineAppSetup(() => {
-  window.addEventListener('keydown', (e) => {
-    if (e.key !== 'f') {
-      return
-    }
-    const t = e.target as HTMLElement | null
-    if (t?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t?.tagName ?? '')) {
-      return
-    }
-    e.stopImmediatePropagation()
-  }, true)
-})
+const empty = {};
+const isProd = import.meta.env.PROD;
+const lastEvent = Object.values(events).at(-1);
+
+export const scalewayBrand = {
+  logoHorizontal: import.meta.env.BASE_URL + "Scaleway-Logo.png",
+};
+
+export default defineAppSetup(({ app }) => {
+  app.config.globalProperties.$event = isProd ? empty : lastEvent;
+  app.config.globalProperties.$brand = isProd ? empty : scalewayBrand;
+
+  preventToggleFullscreen();
+});

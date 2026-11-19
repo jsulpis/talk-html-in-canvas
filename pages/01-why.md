@@ -23,7 +23,7 @@ tree:
   - role: main
     label: landmark
   - role: heading
-    label: '« DevFest Lyon », niveau 2'
+    label: '« Bienvenue », niveau 2'
     level: 1
   - role: form
     label: formulaire
@@ -37,7 +37,7 @@ tree:
 ---
 
 <main v-click class="semantic-card vs-lead">
-  <h2>{{ $slidev.configs.eyebrow }}</h2>
+  <h2>Bienvenue</h2>
   <form>
     <label for="name">Votre nom</label>
     <input id="name" type="text" autocomplete="name">
@@ -51,7 +51,7 @@ tree:
 
 ```html
 <main class="card">
-  <h2>DevFest Lyon</h2>
+  <h2>Bienvenue</h2>
 
   <form>
     <label for="name">Votre nom</label>

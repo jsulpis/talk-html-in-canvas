@@ -8,9 +8,9 @@
         v-for="(item, index) in $frontmatter.items.slice(0, $frontmatter.active)"
         :key="item"
         class="agenda-item"
-        :class="{ 'is-active': index + 1 === $frontmatter.active }"
+        :class="{ 'is-active': Number(index) + 1 === Number($frontmatter.active) }"
       >
-        <span class="agenda-number">{{ String(index + 1).padStart(2, '0') }}</span>
+        <span class="agenda-number">{{ String(Number(index) + 1).padStart(2, '0') }}</span>
         <span class="agenda-label">{{ item }}</span>
       </div>
     </main>

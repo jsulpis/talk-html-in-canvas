@@ -114,7 +114,7 @@ async function render() {
     <canvas
       ref="canvasEl"
       role="img"
-      aria-label="Logo du DevFest Lyon redessiné en art ASCII"
+      aria-label="Logo redessiné en art ASCII"
     />
   </figure>
 </template>
