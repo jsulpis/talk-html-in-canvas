@@ -16,5 +16,17 @@
     "gl-matrix": "^3.4.4",
     "three": "0.187.0",
     "vue": "3.5.33"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "26",
+      "onFail": "download"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.21.0",
+      "onFail": "download"
+    }
   }
 }
