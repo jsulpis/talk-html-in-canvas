@@ -1,8 +1,14 @@
+<script setup lang="ts">
+import { resolveAssetUrl } from "@slidev/client";
+
+const shot = resolveAssetUrl("/petit-cauldron.eidoux.dev.jpg");
+</script>
+
 <template>
   <div class="shot">
     <div class="shot-frame">
       <img
-        src="/petit-cauldron.eidoux.dev.jpg"
+        :src="shot"
         alt="Capture d’écran de Petit Cauldron"
       />
       <span v-click class="shot-panel" />

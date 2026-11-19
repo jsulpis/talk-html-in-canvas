@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useSlideContext } from "@slidev/client";
+import { resolveAssetUrl, useSlideContext } from "@slidev/client";
 import { showOverview } from "@slidev/client/state/storage.ts";
 import { glCanvas, linearToneMapping, loadTexture } from "@radiancejs/gl";
 import { mat4 } from "gl-matrix";
@@ -115,7 +115,7 @@ async function init() {
   const el = canvas.value;
   if (!el || renderer) return;
 
-  const disp = await loadTexture(`${props.name}_disp_1k.jpg`, {
+  const disp = await loadTexture(resolveAssetUrl(`${props.name}_disp_1k.jpg`), {
     anisotropy: 8,
   });
   if (!el.isConnected) return;

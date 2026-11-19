@@ -256,9 +256,13 @@ title: Layout
 side: canvas
 ---
 
+<script setup lang="ts">
+import { resolveAssetUrl } from "@slidev/client";
+</script>
+
 <v-switch at="0">
   <template #1>
-    <img class="canvas-meme" src="/bon-chance.webp" alt="Mème « Bon chance »" />
+    <img class="canvas-meme" :src="resolveAssetUrl('/bon-chance.webp')" alt="Mème « Bon chance »" />
   </template>
   <template #2>
     <CanvasOverflow />

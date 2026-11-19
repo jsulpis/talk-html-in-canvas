@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { resolveAssetUrl } from "@slidev/client";
+
+const shot = resolveAssetUrl("/petit-cauldron.eidoux.dev.jpg");
+</script>
+
 <template>
   <div
     class="layout-demo"
@@ -7,7 +13,7 @@
     <article class="project-card">
       <figure class="project-media">
         <img
-          src="/petit-cauldron.eidoux.dev.jpg"
+          :src="shot"
           alt="Capture d’écran du jeu Petit Cauldron"
         />
         <figcaption>Jeu web</figcaption>

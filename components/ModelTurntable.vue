@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useSlideContext } from "@slidev/client";
+import { resolveAssetUrl, useSlideContext } from "@slidev/client";
 import { showOverview } from "@slidev/client/state/storage.ts";
 import {
   acesToneMapping,
@@ -242,8 +242,9 @@ async function init() {
   const el = canvas.value;
   if (!el || renderer) return;
 
-  const obj = await fetch(props.src).then((response) => response.text());
-  const dir = props.src.slice(0, props.src.lastIndexOf("/") + 1);
+  const src = resolveAssetUrl(props.src);
+  const obj = await fetch(src).then((response) => response.text());
+  const dir = src.slice(0, src.lastIndexOf("/") + 1);
   const mtlName = obj.match(/^mtllib\s+(.+)$/m)?.[1]?.trim();
   const mtl = mtlName
     ? await fetch(dir + mtlName).then((response) => response.text())
@@ -251,7 +252,11 @@ async function init() {
 
   const { materials, diffuseMap } = parseMtl(mtl);
   const model = buildModel(obj, materials);
-  const mapUrl = props.diffuse ?? (diffuseMap ? dir + diffuseMap : "");
+  const mapUrl = props.diffuse
+    ? resolveAssetUrl(props.diffuse)
+    : diffuseMap
+      ? dir + diffuseMap
+      : "";
   const diffuse = mapUrl
     ? await loadTexture(mapUrl, { colorSpace: "srgb" })
     : null;

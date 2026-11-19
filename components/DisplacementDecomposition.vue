@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DisplacementSquare from "./DisplacementSquare.vue";
+import { resolveAssetUrl } from "@slidev/client";
 
 defineProps<{ name: string }>();
 </script>
@@ -8,7 +9,7 @@ defineProps<{ name: string }>();
   <div class="decomposition">
     <figure>
       <div class="panel panel--map">
-        <img :src="`${name}_disp_1k.jpg`" alt="Carte de déplacement" />
+        <img :src="resolveAssetUrl(`${name}_disp_1k.jpg`)" alt="Carte de déplacement" />
       </div>
       <figcaption>Displacement</figcaption>
     </figure>

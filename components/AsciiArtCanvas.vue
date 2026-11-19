@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from "vue";
+import { resolveAssetUrl } from "@slidev/client";
 
 const COLS = 140;
 // Each brightness band gets a few glyphs to pick from: the random pick keeps
@@ -9,7 +10,7 @@ const BANDS = ["", ".,", "-~", "+=", "*x", "%#@&"];
 // blank, while navy sits at 0.8. Raise for more shade evenness, lower to
 // restore contrast.
 const INK_GAMMA = 0.7;
-const SRC = "/devfest-lyon.png";
+const SRC = resolveAssetUrl("/devfest-lyon.png");
 
 const canvasEl = ref<HTMLCanvasElement>();
 let rendered = false;

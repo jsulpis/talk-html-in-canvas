@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ModelTurntable from "./ModelTurntable.vue";
+import { resolveAssetUrl } from "@slidev/client";
 
 defineProps<{ src: string; albedo: string }>();
 </script>
@@ -8,7 +9,7 @@ defineProps<{ src: string; albedo: string }>();
   <div class="decomposition">
     <figure>
       <div class="panel">
-        <img :src="albedo" alt="Carte d'albedo du modèle dépliée en UV" />
+        <img :src="resolveAssetUrl(albedo)" alt="Carte d'albedo du modèle dépliée en UV" />
       </div>
       <figcaption>Couleur</figcaption>
     </figure>

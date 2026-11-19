@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useSlideContext } from "@slidev/client";
+import { resolveAssetUrl, useSlideContext } from "@slidev/client";
 import { showOverview } from "@slidev/client/state/storage.ts";
 import { glCanvas, loadTexture, pingPongFBO } from "@radiancejs/gl";
 import { mat4 } from "gl-matrix";
 
-const SRC = "/devfest-lyon.png";
+const SRC = resolveAssetUrl("/devfest-lyon.png");
 
 // 531 × 376 source image.
 const COLS = 36;
